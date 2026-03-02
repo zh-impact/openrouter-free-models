@@ -3,7 +3,10 @@
     "allow": [
       "Bash(openspec status:*)",
       "Bash(openspec instructions:*)",
-      "Bash(openspec list:*)"
+      "Bash(openspec list:*)",
+      "Bash(curl:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(tail:*)"
     ]
   }
 }

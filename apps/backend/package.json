@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev src/index.ts --port 8787",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy src/index.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest"

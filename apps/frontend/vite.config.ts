@@ -22,4 +22,8 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
   },
+  define: {
+    // 生产环境使用环境变量，开发环境使用本地代理
+    __API_BASE_URL__: JSON.stringify(process.env.VITE_API_BASE_URL || ''),
+  },
 });
