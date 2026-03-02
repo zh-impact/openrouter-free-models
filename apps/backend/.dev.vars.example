@@ -1,0 +1,6 @@
+# Cloudflare D1 Database ID
+# Beta 环境数据库 ID
+D1_DATABASE_ID=518efbbb-f3aa-4142-b611-737f16dcc011
+
+# Cron 密钥 (可选，用于保护 /cron/sync 端点)
+# CRON_SECRET=your-secret-here
