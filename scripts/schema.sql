@@ -1,4 +1,9 @@
--- Drop existing tables if they exist (for clean initialization)
+-- Drop existing views and tables if they exist (for clean initialization)
+DROP VIEW IF EXISTS recent_changes;
+DROP VIEW IF EXISTS active_models;
+DROP TABLE IF EXISTS scheduled_notifications;
+DROP TABLE IF EXISTS subscriptions_log;
+DROP TABLE IF EXISTS subscribers;
 DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS model_changes;
 DROP TABLE IF EXISTS models;
@@ -76,3 +81,52 @@ FROM model_changes mc
 LEFT JOIN models m ON mc.model_id = m.id
 ORDER BY mc.detected_at DESC
 LIMIT 100;
+
+-- Subscribers table (email subscription system)
+CREATE TABLE IF NOT EXISTS subscribers (
+  id TEXT PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'active', 'unsubscribed')),
+  unsubscribe_token TEXT NOT NULL UNIQUE,
+  subscribed_at TEXT NOT NULL,
+  confirmed_at TEXT,
+  last_notified_at TEXT,
+  notification_hour INTEGER NOT NULL DEFAULT 9,
+  preferences TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Subscription log (for tracking sent emails)
+CREATE TABLE IF NOT EXISTS subscriptions_log (
+  id TEXT PRIMARY KEY,
+  subscriber_id TEXT NOT NULL,
+  batch_id TEXT NOT NULL,
+  sent_at TEXT NOT NULL,
+  changes_count INTEGER NOT NULL,
+  added_models TEXT,
+  removed_models TEXT,
+  status TEXT NOT NULL CHECK(status IN ('success', 'partial', 'failed')),
+  error_message TEXT,
+  FOREIGN KEY (subscriber_id) REFERENCES subscribers(id)
+);
+
+-- Notification scheduling table (for daily digests)
+CREATE TABLE IF NOT EXISTS scheduled_notifications (
+  id TEXT PRIMARY KEY,
+  target_date TEXT NOT NULL,
+  notification_hour INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'processing', 'sent', 'failed')),
+  changes_snapshot TEXT,
+  subscriber_count INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Indexes for subscription tables
+CREATE INDEX IF NOT EXISTS idx_subscribers_status ON subscribers(status);
+CREATE INDEX IF NOT EXISTS idx_subscribers_email ON subscribers(email);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_log_subscriber ON subscriptions_log(subscriber_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_log_batch ON subscriptions_log(batch_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_log_sent_at ON subscriptions_log(sent_at);
+CREATE INDEX IF NOT EXISTS idx_scheduled_notifications_date ON scheduled_notifications(target_date, notification_hour);

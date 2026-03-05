@@ -4,6 +4,7 @@ import type {
   ModelChange,
   ModelDiff,
   ModelChangeWithDetails,
+  Subscriber,
 } from '@openrouter-free-models/shared';
 import { CHANGE_TYPES, TABLES } from '@openrouter-free-models/shared';
 import type { D1Database } from '@cloudflare/workers-types';
@@ -262,5 +263,152 @@ export class StorageService {
    */
   private generateId(): string {
     return `${Date.now()}-${crypto.randomUUID()}`;
+  }
+
+  // ==================== Subscription Methods ====================
+
+  /**
+   * Add a new subscriber
+   */
+  async addSubscriber(email: string, unsubscribeToken: string): Promise<string> {
+    const id = this.generateId();
+    const now = new Date().toISOString();
+
+    await this.db
+      .prepare(
+        `INSERT INTO subscribers (
+          id, email, status, unsubscribe_token, subscribed_at, notification_hour
+        ) VALUES (?, ?, 'active', ?, ?, 9)`
+      )
+      .bind(id, email.toLowerCase(), unsubscribeToken, now)
+      .run();
+
+    return id;
+  }
+
+  /**
+   * Get subscriber by email
+   */
+  async getSubscriberByEmail(email: string): Promise<Subscriber | null> {
+    const result = await this.db
+      .prepare(`SELECT * FROM subscribers WHERE email = ?`)
+      .bind(email.toLowerCase())
+      .first<Subscriber>();
+
+    return result || null;
+  }
+
+  /**
+   * Get subscriber by ID
+   */
+  async getSubscriberById(id: string): Promise<Subscriber | null> {
+    const result = await this.db
+      .prepare(`SELECT * FROM subscribers WHERE id = ?`)
+      .bind(id)
+      .first<Subscriber>();
+
+    return result || null;
+  }
+
+  /**
+   * Get subscriber by unsubscribe token
+   */
+  async getSubscriberByUnsubscribeToken(token: string): Promise<Subscriber | null> {
+    const result = await this.db
+      .prepare(`SELECT * FROM subscribers WHERE unsubscribe_token = ?`)
+      .bind(token)
+      .first<Subscriber>();
+
+    return result || null;
+  }
+
+  /**
+   * Update subscriber status
+   */
+  async updateSubscriberStatus(
+    id: string,
+    status: 'active' | 'unsubscribed'
+  ): Promise<void> {
+    const now = new Date().toISOString();
+    const fields = status === 'active' ? 'status = ?, confirmed_at = ?' : 'status = ?';
+
+    await this.db
+      .prepare(`UPDATE subscribers SET ${fields}, updated_at = ? WHERE id = ?`)
+      .bind(...(status === 'active' ? [status, now, now, id] : [status, now, id]))
+      .run();
+  }
+
+  /**
+   * Update last notified timestamp
+   */
+  async updateLastNotified(id: string): Promise<void> {
+    const now = new Date().toISOString();
+
+    await this.db
+      .prepare(`UPDATE subscribers SET last_notified_at = ?, updated_at = ? WHERE id = ?`)
+      .bind(now, now, id)
+      .run();
+  }
+
+  /**
+   * Get all active subscribers
+   */
+  async getActiveSubscribers(): Promise<Subscriber[]> {
+    const result = await this.db
+      .prepare(`SELECT * FROM subscribers WHERE status = 'active'`)
+      .all<Subscriber>();
+
+    return result.results;
+  }
+
+  /**
+   * Log subscription email send
+   */
+  async logSubscription(
+    subscriberId: string,
+    batchId: string,
+    changesCount: number,
+    addedModels: string | null,
+    removedModels: string | null,
+    status: 'success' | 'partial' | 'failed',
+    errorMessage: string | null = null
+  ): Promise<void> {
+    const id = this.generateId();
+    const now = new Date().toISOString();
+
+    await this.db
+      .prepare(
+        `INSERT INTO subscriptions_log (
+          id, subscriber_id, batch_id, sent_at, changes_count,
+          added_models, removed_models, status, error_message
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .bind(id, subscriberId, batchId, now, changesCount, addedModels, removedModels, status, errorMessage)
+      .run();
+  }
+
+  /**
+   * Get changes since a specific date
+   */
+  async getChangesSince(since: string): Promise<ModelChangeWithDetails[]> {
+    const result = await this.db
+      .prepare(
+        `SELECT
+          mc.*,
+          m.name as model_name
+        FROM ${TABLES.MODEL_CHANGES} mc
+        LEFT JOIN ${TABLES.MODELS} m ON mc.model_id = m.id
+        WHERE mc.detected_at > ?
+        ORDER BY mc.detected_at DESC`
+      )
+      .bind(since)
+      .all();
+
+    return result.results.map((row) => ({
+      ...row,
+      model_name: (row as any).model_name || null,
+      old_model: row.old_data ? JSON.parse(String(row.old_data)) : null,
+      new_model: row.new_data ? JSON.parse(String(row.new_data)) : null,
+    })) as ModelChangeWithDetails[];
   }
 }

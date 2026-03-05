@@ -138,3 +138,74 @@ export interface NotificationConfig {
     headers?: Record<string, string>;
   };
 }
+
+/**
+ * Email subscriber
+ */
+export interface Subscriber {
+  id: string;
+  email: string;
+  status: 'pending' | 'active' | 'unsubscribed';
+  unsubscribe_token: string;
+  subscribed_at: string;
+  confirmed_at: string | null;
+  last_notified_at: string | null;
+  notification_hour: number;
+  preferences: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Subscription log entry
+ */
+export interface SubscriptionLog {
+  id: string;
+  subscriber_id: string;
+  batch_id: string;
+  sent_at: string;
+  changes_count: number;
+  added_models: string | null;
+  removed_models: string | null;
+  status: 'success' | 'partial' | 'failed';
+  error_message: string | null;
+}
+
+/**
+ * Scheduled notification
+ */
+export interface ScheduledNotification {
+  id: string;
+  target_date: string;
+  notification_hour: number;
+  status: 'pending' | 'processing' | 'sent' | 'failed';
+  changes_snapshot: string | null;
+  subscriber_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Subscription request
+ */
+export interface SubscribeRequest {
+  email: string;
+}
+
+/**
+ * Subscription response
+ */
+export interface SubscribeResponse {
+  id: string;
+  email: string;
+  status: 'pending' | 'active';
+  message: string;
+}
+
+/**
+ * Unsubscribe response
+ */
+export interface UnsubscribeResponse {
+  success: boolean;
+  message: string;
+}

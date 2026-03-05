@@ -8,6 +8,8 @@ export interface Env {
   OPENROUTER_API_KEY?: string;
   NOTIFICATION_EMAIL?: string;
   RESEND_API_KEY?: string;
+  RESEND_FROM_EMAIL?: string;
+  BASE_URL?: string;
 }
 
 /**
