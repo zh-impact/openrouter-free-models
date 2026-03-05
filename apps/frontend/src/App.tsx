@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Header } from './components/Header';
 import { ModelsPage } from './pages/ModelsPage';
 import { ChangesPage } from './pages/ChangesPage';
+import { SubscribePage } from './pages/SubscribePage';
 
-type Page = 'models' | 'changes';
+type Page = 'models' | 'changes' | 'subscribe';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('models');
@@ -44,6 +45,7 @@ function App() {
       <main className="container mx-auto px-4 py-8">
         {currentPage === 'models' && <ModelsPage />}
         {currentPage === 'changes' && <ChangesPage />}
+        {currentPage === 'subscribe' && <SubscribePage />}
       </main>
       <footer className="container mx-auto px-4 py-6 text-center text-sm text-gray-600 dark:text-gray-400">
         <p>OpenRouter Free Models Monitor • Data updated hourly</p>

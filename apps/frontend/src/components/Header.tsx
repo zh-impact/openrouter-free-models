@@ -1,6 +1,6 @@
 interface HeaderProps {
   currentPage: string;
-  onPageChange: (page: 'models' | 'changes') => void;
+  onPageChange: (page: 'models' | 'changes' | 'subscribe') => void;
   darkMode: boolean;
   onToggleDarkMode: () => void;
 }
@@ -39,6 +39,16 @@ export function Header({ currentPage, onPageChange, darkMode, onToggleDarkMode }
               }`}
             >
               Changes
+            </button>
+            <button
+              onClick={() => onPageChange('subscribe')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                currentPage === 'subscribe'
+                  ? 'bg-primary-600 text-white'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
+            >
+              订阅
             </button>
             <button
               onClick={onToggleDarkMode}
