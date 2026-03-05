@@ -1,11 +1,12 @@
 {
   "permissions": {
     "allow": [
+      "Bash(openspec new:*)",
       "Bash(openspec status:*)",
       "Bash(openspec instructions:*)",
       "Bash(openspec list:*)",
-      "Bash(curl:*)",
       "Bash(npx wrangler:*)",
+      "Bash(curl:*)",
       "Bash(tail:*)"
     ]
   }
