@@ -2,11 +2,15 @@ import { useState, useMemo } from 'react';
 import { ModelList } from '../components/ModelList';
 import { RefreshButton } from '../components/RefreshButton';
 import { SearchBar } from '../components/SearchBar';
+import { ViewToggle } from '../components/ViewToggle';
 import { useModels } from '../hooks/useModels';
+
+type ViewMode = 'grid' | 'list';
 
 export function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalityFilter, setModalityFilter] = useState<string>('all');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const { models, loading, error, lastUpdated, refresh } = useModels();
 
   const filteredModels = useMemo(() => {
@@ -46,11 +50,14 @@ export function ModelsPage() {
             {filteredModels.length} {filteredModels.length === 1 ? 'model' : 'models'} available
           </p>
         </div>
-        <RefreshButton
-          onRefresh={handleRefresh}
-          refreshing={loading}
-          lastUpdated={lastUpdated}
-        />
+        <div className="flex items-center gap-3">
+          <ViewToggle viewMode={viewMode} onChange={setViewMode} />
+          <RefreshButton
+            onRefresh={handleRefresh}
+            refreshing={loading}
+            lastUpdated={lastUpdated}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -73,7 +80,7 @@ export function ModelsPage() {
         </div>
       </div>
 
-      <ModelList models={filteredModels} loading={loading} error={error} />
+      <ModelList models={filteredModels} loading={loading} error={error} viewMode={viewMode} />
     </div>
   );
 }

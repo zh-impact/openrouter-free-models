@@ -1,8 +1,10 @@
 /**
  * OpenRouter API endpoints
  */
+export const OPENROUTER_BASE_URL = 'https://openrouter.ai';
 export const OPENROUTER_API_BASE = 'https://openrouter.ai/api/v1';
 export const OPENROUTER_MODELS_ENDPOINT = `${OPENROUTER_API_BASE}/models`;
+export const OPENROUTER_MODEL_URL = (modelId: string) => `${OPENROUTER_BASE_URL}/models/${modelId}`;
 
 /**
  * Free model ID suffix
