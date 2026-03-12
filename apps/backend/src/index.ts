@@ -8,7 +8,6 @@ import { DiffService } from './lib/diff'
 import { AuthMiddleware } from './lib/auth'
 
 import { NotificationService } from './services/notification'
-import { ResendService } from './services/resend'
 import { StorageService } from './services/storage'
 import { OpenRouterService } from './services/openrouter'
 
@@ -75,17 +74,9 @@ app.get('/cron/daily-digest', AuthMiddleware.requireCronSecret(), async c => {
 
   const storage = new StorageService(c.env.DB)
 
-  // Initialize Resend service for email notifications
-  const resendService = new ResendService(
-    c.env.RESEND_API_KEY || '',
-    c.env.RESEND_FROM_EMAIL || 'noreply@openrouter-free-models.pages.dev',
-    c.env.BASE_URL || 'https://openrouter-free-models-frontend.pages.dev'
-  )
-
   // Initialize notification service
   const notificationService = new NotificationService(
     storage,
-    resendService,
     c.env.TELEGRAM_BOT_TOKEN,
     c.env.TELEGRAM_WEBHOOK_URL
   )

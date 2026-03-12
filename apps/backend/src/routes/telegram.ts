@@ -3,7 +3,6 @@ import { Hono } from 'hono'
 import type { Env } from '../lib/db'
 import { AuthMiddleware } from '../lib/auth'
 import { NotificationService } from '../services/notification'
-import { ResendService } from '../services/resend'
 import { StorageService } from '../services/storage'
 
 const telegram = new Hono<{ Bindings: Env }>()
@@ -13,15 +12,9 @@ const telegram = new Hono<{ Bindings: Env }>()
  */
 telegram.post('/webhook', async c => {
   const storage = new StorageService(c.env.DB)
-  const resendService = new ResendService(
-    c.env.RESEND_API_KEY || '',
-    c.env.RESEND_FROM_EMAIL || 'noreply@openrouter-free-models.pages.dev',
-    c.env.BASE_URL || 'https://openrouter-free-models-frontend.pages.dev'
-  )
 
   const notificationService = new NotificationService(
     storage,
-    resendService,
     c.env.TELEGRAM_BOT_TOKEN,
     c.env.TELEGRAM_WEBHOOK_URL
   )
@@ -47,15 +40,9 @@ telegram.post('/webhook', async c => {
  */
 telegram.get('/info', async c => {
   const storage = new StorageService(c.env.DB)
-  const resendService = new ResendService(
-    c.env.RESEND_API_KEY || '',
-    c.env.RESEND_FROM_EMAIL || 'noreply@openrouter-free-models.pages.dev',
-    c.env.BASE_URL || 'https://openrouter-free-models-frontend.pages.dev'
-  )
 
   const notificationService = new NotificationService(
     storage,
-    resendService,
     c.env.TELEGRAM_BOT_TOKEN
   )
 
@@ -76,15 +63,9 @@ telegram.get('/info', async c => {
  */
 telegram.post('/setup-webhook', async c => {
   const storage = new StorageService(c.env.DB)
-  const resendService = new ResendService(
-    c.env.RESEND_API_KEY || '',
-    c.env.RESEND_FROM_EMAIL || 'noreply@openrouter-free-models.pages.dev',
-    c.env.BASE_URL || 'https://openrouter-free-models-frontend.pages.dev'
-  )
 
   const notificationService = new NotificationService(
     storage,
-    resendService,
     c.env.TELEGRAM_BOT_TOKEN,
     c.env.TELEGRAM_WEBHOOK_URL
   )
@@ -124,15 +105,9 @@ telegram.post('/send', AuthMiddleware.requireApiKey(), async c => {
   }
 
   const storage = new StorageService(c.env.DB)
-  const resendService = new ResendService(
-    c.env.RESEND_API_KEY || '',
-    c.env.RESEND_FROM_EMAIL || 'noreply@openrouter-free-models.pages.dev',
-    c.env.BASE_URL || 'https://openrouter-free-models-frontend.pages.dev'
-  )
 
   const notificationService = new NotificationService(
     storage,
-    resendService,
     c.env.TELEGRAM_BOT_TOKEN
   )
 
@@ -169,15 +144,9 @@ telegram.post('/broadcast', AuthMiddleware.requireApiKey(), async c => {
   }
 
   const storage = new StorageService(c.env.DB)
-  const resendService = new ResendService(
-    c.env.RESEND_API_KEY || '',
-    c.env.RESEND_FROM_EMAIL || 'noreply@openrouter-free-models.pages.dev',
-    c.env.BASE_URL || 'https://openrouter-free-models-frontend.pages.dev'
-  )
 
   const notificationService = new NotificationService(
     storage,
-    resendService,
     c.env.TELEGRAM_BOT_TOKEN
   )
 

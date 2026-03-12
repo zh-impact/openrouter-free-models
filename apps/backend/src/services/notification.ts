@@ -1,7 +1,6 @@
 import { Bot } from 'grammy';
 
 import type { ModelChangeWithDetails } from '@openrouter-free-models/shared';
-import { ResendService } from './resend';
 import { StorageService } from './storage';
 
 /**
@@ -12,7 +11,6 @@ export class NotificationService {
 
   constructor(
     private storage: StorageService,
-    private resendService: ResendService,
     private telegramBotToken?: string,
     private telegramWebhookUrl?: string
   ) {
@@ -51,7 +49,7 @@ export class NotificationService {
    * NOTE: Email sending is DISABLED to reduce costs.
    * This method returns skipped status for all email subscribers.
    */
-  private async sendEmailDigest(changes: ModelChangeWithDetails[]): Promise<{
+  private async sendEmailDigest(_changes: ModelChangeWithDetails[]): Promise<{
     total: number;
     sent: number;
     failed: number;
