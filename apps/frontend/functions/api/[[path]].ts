@@ -1,7 +1,7 @@
 // Cloudflare Pages Function - 通用 API 代理
 // 将所有 /api/* 请求转发到 Workers 后端
 
-export async function onRequest(context) {
+export async function onRequest(context: any) {
   const { request, env } = context;
   const url = new URL(request.url);
 
