@@ -121,7 +121,7 @@ export interface ModelDiff {
 /**
  * Notification channels
  */
-export type NotificationChannel = 'email' | 'webhook';
+export type NotificationChannel = 'email' | 'webhook' | 'telegram';
 
 /**
  * Notification config
@@ -136,6 +136,9 @@ export interface NotificationConfig {
   webhook?: {
     url: string;
     headers?: Record<string, string>;
+  };
+  telegram?: {
+    chat_id: string;
   };
 }
 

@@ -1,6 +1,29 @@
 # Cloudflare D1 Database ID
-# Beta 环境数据库 ID
-D1_DATABASE_ID=518efbbb-f3aa-4142-b611-737f16dcc011
+D1_DATABASE_ID=your-database-id-here
 
-# Cron 密钥 (可选，用于保护 /cron/sync 端点)
-# CRON_SECRET=your-secret-here
+# Cron 密钥 (用于保护 /cron/* 端点)
+CRON_SECRET=your-cron-secret-here
+
+# OpenRouter API Key (可选，某些端点可能需要)
+# OPENROUTER_API_KEY=sk-or-v1-...
+
+# Resend API Key (用于发送邮件)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
+
+# Resend 发件人邮箱
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+
+# 基础 URL (用于生成退订链接)
+BASE_URL=https://yourdomain.com
+
+# Telegram Bot Token (从 @BotFather 获取)
+TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
+
+# Telegram Webhook URL (生产环境)
+TELEGRAM_WEBHOOK_URL=https://your-workers-url.workers.dev/api/telegram/webhook
+
+# 管理员 API 密钥 (用于保护管理端点)
+ADMIN_API_KEY=your-admin-api-key-here
+
+# 调试模式 (开发环境)
+DEBUG=true

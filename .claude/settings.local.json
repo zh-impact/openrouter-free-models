@@ -7,7 +7,9 @@
       "Bash(openspec list:*)",
       "Bash(npx wrangler:*)",
       "Bash(curl:*)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(cd:*)",
+      "Bash(pnpm:*)"
     ]
   }
 }

@@ -411,4 +411,120 @@ export class StorageService {
       new_model: row.new_data ? JSON.parse(String(row.new_data)) : null,
     })) as ModelChangeWithDetails[];
   }
+
+  // ==================== Telegram Subscription Methods ====================
+
+  /**
+   * Add or update Telegram subscriber
+   */
+  async addTelegramSubscriber(subscriber: {
+    chat_id: string | number;
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+  }): Promise<string> {
+    const now = new Date().toISOString();
+
+    // Check if subscriber exists
+    const existing = await this.getTelegramSubscriberByChatId(subscriber.chat_id);
+
+    if (existing) {
+      // Update existing subscriber and set to active
+      await this.db
+        .prepare(
+          `UPDATE telegram_subscribers SET
+            username = ?,
+            first_name = ?,
+            last_name = ?,
+            status = 'active',
+            updated_at = ?
+          WHERE chat_id = ?`
+        )
+        .bind(
+          subscriber.username || null,
+          subscriber.first_name || null,
+          subscriber.last_name || null,
+          now,
+          subscriber.chat_id
+        )
+        .run();
+
+      return existing.id;
+    }
+
+    // Create new subscriber
+    const id = this.generateId();
+
+    await this.db
+      .prepare(
+        `INSERT INTO telegram_subscribers (
+          id, chat_id, username, first_name, last_name, subscribed_at
+        ) VALUES (?, ?, ?, ?, ?, ?)`
+      )
+      .bind(
+        id,
+        String(subscriber.chat_id),
+        subscriber.username || null,
+        subscriber.first_name || null,
+        subscriber.last_name || null,
+        now
+      )
+      .run();
+
+    return id;
+  }
+
+  /**
+   * Get Telegram subscriber by chat ID
+   */
+  async getTelegramSubscriberByChatId(chatId: string | number): Promise<any | null> {
+    const result = await this.db
+      .prepare(`SELECT * FROM telegram_subscribers WHERE chat_id = ?`)
+      .bind(String(chatId))
+      .first();
+
+    return result || null;
+  }
+
+  /**
+   * Unsubscribe Telegram user
+   */
+  async unsubscribeTelegramUser(chatId: string | number): Promise<void> {
+    const now = new Date().toISOString();
+
+    await this.db
+      .prepare(`UPDATE telegram_subscribers SET status = 'unsubscribed', updated_at = ? WHERE chat_id = ?`)
+      .bind(now, String(chatId))
+      .run();
+  }
+
+  /**
+   * Get active Telegram subscribers
+   */
+  async getActiveTelegramSubscribers(): Promise<any[]> {
+    const result = await this.db
+      .prepare(`SELECT * FROM telegram_subscribers WHERE status = 'active'`)
+      .all();
+
+    return result.results;
+  }
+
+  /**
+   * Update Telegram last notified timestamp
+   */
+  async updateTelegramLastNotified(id: string): Promise<void> {
+    const now = new Date().toISOString();
+
+    await this.db
+      .prepare(`UPDATE telegram_subscribers SET last_notified_at = ?, updated_at = ? WHERE id = ?`)
+      .bind(now, now, id)
+      .run();
+  }
+
+  /**
+   * Get active email subscribers (alias for getActiveSubscribers)
+   */
+  async getActiveEmailSubscribers(): Promise<Subscriber[]> {
+    return this.getActiveSubscribers();
+  }
 }

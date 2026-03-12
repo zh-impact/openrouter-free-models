@@ -8,6 +8,14 @@ schema: spec-driven
 #     Tech stack: TypeScript, React, Node.js
 #     We use conventional commits
 #     Domain: e-commerce platform
+context: |
+  Project: OpenRouter Free Models
+
+  Tech stack:
+  - Package manager: pnpm, pnpm workspace
+  - Frontend: Vite, React, TypeScript, TailwindCSS
+  - Backend: wrangler, hono, grammy, resend
+  - Database: cloudflare D1
 
 # Per-artifact rules (optional)
 # Add custom rules for specific artifacts.
@@ -18,3 +26,15 @@ schema: spec-driven
 #       - Always include a "Non-goals" section
 #     tasks:
 #       - Break tasks into chunks of max 2 hours
+
+rules:
+  proposal:
+    - Always include "Success Criteria" section
+    - Keep "Non-goals" explicit
+
+  design:
+    - Include data flow diagrams where applicable
+
+  tasks:
+    - Mark dependencies between tasks
+    - Include testing tasks

@@ -10,6 +10,10 @@ export interface Env {
   RESEND_API_KEY?: string;
   RESEND_FROM_EMAIL?: string;
   BASE_URL?: string;
+  TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_WEBHOOK_URL?: string;
+  ADMIN_API_KEY?: string;
+  DEBUG?: string;
 }
 
 /**

@@ -1,6 +1,7 @@
 -- Drop existing views and tables if they exist (for clean initialization)
 DROP VIEW IF EXISTS recent_changes;
 DROP VIEW IF EXISTS active_models;
+DROP TABLE IF EXISTS telegram_subscribers;
 DROP TABLE IF EXISTS scheduled_notifications;
 DROP TABLE IF EXISTS subscriptions_log;
 DROP TABLE IF EXISTS subscribers;
@@ -123,6 +124,21 @@ CREATE TABLE IF NOT EXISTS scheduled_notifications (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Telegram subscribers table
+CREATE TABLE IF NOT EXISTS telegram_subscribers (
+  id TEXT PRIMARY KEY,
+  chat_id TEXT NOT NULL UNIQUE,
+  username TEXT,
+  first_name TEXT,
+  last_name TEXT,
+  status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active', 'unsubscribed')),
+  subscribed_at TEXT NOT NULL,
+  last_notified_at TEXT,
+  preferences TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Indexes for subscription tables
 CREATE INDEX IF NOT EXISTS idx_subscribers_status ON subscribers(status);
 CREATE INDEX IF NOT EXISTS idx_subscribers_email ON subscribers(email);
@@ -130,3 +146,5 @@ CREATE INDEX IF NOT EXISTS idx_subscriptions_log_subscriber ON subscriptions_log
 CREATE INDEX IF NOT EXISTS idx_subscriptions_log_batch ON subscriptions_log(batch_id);
 CREATE INDEX IF NOT EXISTS idx_subscriptions_log_sent_at ON subscriptions_log(sent_at);
 CREATE INDEX IF NOT EXISTS idx_scheduled_notifications_date ON scheduled_notifications(target_date, notification_hour);
+CREATE INDEX IF NOT EXISTS idx_telegram_subscribers_status ON telegram_subscribers(status);
+CREATE INDEX IF NOT EXISTS idx_telegram_subscribers_chat_id ON telegram_subscribers(chat_id);
