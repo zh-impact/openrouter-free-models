@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, NavLink } from 'react-router-dom';
 import { Header } from './components/Header';
 import { ModelsPage } from './pages/ModelsPage';
 import { ChangesPage } from './pages/ChangesPage';
 import { SubscribePage } from './pages/SubscribePage';
+import { AboutPage } from './pages/AboutPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -41,10 +43,29 @@ function App() {
           <Route path="/models" element={<ModelsPage />} />
           <Route path="/changes" element={<ChangesPage />} />
           <Route path="/subscribe" element={<SubscribePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
         </Routes>
       </main>
       <footer className="container mx-auto px-4 py-6 text-center text-sm text-gray-600 dark:text-gray-400">
-        <p>OpenRouter Free Models Monitor • Data updated hourly</p>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-6">
+          <p>OpenRouter Free Models Monitor • Data updated hourly</p>
+          <div className="flex gap-4">
+            <NavLink
+              to="/about"
+              className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+            >
+              About
+            </NavLink>
+            <span>•</span>
+            <NavLink
+              to="/privacy"
+              className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+            >
+              Privacy Policy
+            </NavLink>
+          </div>
+        </div>
       </footer>
     </div>
   );

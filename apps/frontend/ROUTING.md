@@ -11,7 +11,9 @@ OpenRouter Free Models Monitor 使用 React Router v7 管理应用路由。
 | `/` | ModelsPage | 首页，显示所有免费模型（与 /models 相同） |
 | `/models` | ModelsPage | 模型列表页 |
 | `/changes` | ChangesPage | 变更历史页 |
-| `/subscribe` | SubscribePage | 订阅页（邮件 + Telegram） |
+| `/subscribe` | SubscribePage | 订阅页（Telegram 订阅） |
+| `/about` | AboutPage | 关于页面 |
+| `/privacy` | PrivacyPolicyPage | 隐私政策页面 |
 
 ## 🔧 技术实现
 
@@ -34,6 +36,22 @@ OpenRouter Free Models Monitor 使用 React Router v7 管理应用路由。
 - 激活：`bg-primary-600 text-white`
 - 非激活：`text-gray-700 hover:bg-gray-100`
 
+**Footer 组件**也使用 `NavLink` 实现导航链接：
+
+```tsx
+<NavLink
+  to="/about"
+  className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+>
+  About
+</NavLink>
+```
+
+Footer 链接样式：
+- 悬停效果：`hover:text-gray-900 dark:hover:text-gray-200`
+- 响应式布局：移动端垂直堆叠，桌面端水平排列
+- 活动状态：自动应用 React Router 的 active class
+
 ### 路由配置
 
 **main.tsx** - BrowserRouter 配置：
@@ -50,6 +68,8 @@ OpenRouter Free Models Monitor 使用 React Router v7 管理应用路由。
   <Route path="/models" element={<ModelsPage />} />
   <Route path="/changes" element={<ChangesPage />} />
   <Route path="/subscribe" element={<SubscribePage />} />
+  <Route path="/about" element={<AboutPage />} />
+  <Route path="/privacy" element={<PrivacyPolicyPage />} />
 </Routes>
 ```
 
