@@ -10,7 +10,7 @@ APP_NAME = "OpenRouter Free Models Monitor"
 [[d1_databases]]
 binding = "DB"
 database_name = "openrouter-models"
-database_id = "${D1_DATABASE_ID}"  # 从环境变量读取
+database_id = "518efbbb-f3aa-4142-b611-737f16dcc011"
 
 # Cron triggers - run every hour
 [triggers]
