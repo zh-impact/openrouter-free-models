@@ -20,26 +20,28 @@ export function RefreshButton({ onRefresh, refreshing, lastUpdated }: RefreshBut
   };
 
   return (
-    <div className="flex items-center space-x-4">
-      <span className="text-sm text-gray-600 dark:text-gray-400">
-        Updated: {formatTimeAgo(lastUpdated)}
-      </span>
+    <div className="flex items-center gap-3">
+      <div className="hidden sm:block text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-gray-500 dark:text-gray-500">Updated:</span>{' '}
+        <span className="font-medium">{formatTimeAgo(lastUpdated)}</span>
+      </div>
       <button
         onClick={onRefresh}
         disabled={refreshing}
-        className="btn btn-primary flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
+        title={refreshing ? 'Refreshing...' : 'Refresh models'}
       >
         {refreshing ? (
           <>
             <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-            <span>Refreshing...</span>
+            <span className="ml-2">Refreshing...</span>
           </>
         ) : (
           <>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            <span>Refresh</span>
+            <span className="ml-2 hidden sm:inline">Refresh</span>
           </>
         )}
       </button>

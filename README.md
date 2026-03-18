@@ -174,6 +174,8 @@ Configure these in your Cloudflare Workers dashboard or `.dev.vars`:
 - `NOTIFICATION_EMAIL` - Email address for notifications
 - `RESEND_API_KEY` - API key for sending emails via Resend
 
+📖 **详细配置说明**: 查看 [docs/backend/configuration.md](docs/backend/configuration.md)
+
 ### Cron Schedule
 
 The default cron schedule runs every hour (`0 * * * *`). Modify this in `wrangler.toml`:
@@ -193,6 +195,30 @@ pnpm test
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Documentation
+
+📚 **完整文档**: 查看 [docs/](docs/) 目录获取详细技术文档
+
+### 文档分类
+
+- **部署相关**
+  - [Workers 环境配置指南](docs/deployment/workers-env-setup.md)
+  - [Pages Functions 配置指南](docs/deployment/pages-functions-guide.md)
+
+- **后端相关**
+  - [API 认证与保护](docs/backend/api-auth.md)
+  - [配置说明](docs/backend/configuration.md)
+
+- **前端相关**
+  - [路由说明](docs/frontend/routing.md)
+
+- **功能相关**
+  - [邮件订阅状态说明](docs/features/email-subscription-status.md)
+
+### Claude Code 配置
+
+如果你使用 Claude Code AI 助手，请查看 [claude.md](claude.md) 获取项目特定的配置和指令。
 
 ## License
 

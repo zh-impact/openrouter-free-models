@@ -9,7 +9,8 @@
       "Bash(curl:*)",
       "Bash(tail:*)",
       "Bash(cd:*)",
-      "Bash(pnpm:*)"
+      "Bash(pnpm:*)",
+      "Bash(ls:*)"
     ]
   }
 }

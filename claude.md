@@ -78,7 +78,11 @@ cd apps/frontend && pnpm run deploy
 ```
 D1_DATABASE_ID=<database-id>
 CRON_SECRET=<optional-secret>
+TELEGRAM_BOT_TOKEN=<telegram-bot-token>
+TELEGRAM_WEBHOOK_URL=<webhook-url>
 ```
+
+📖 **详细配置**: [docs/backend/configuration.md](docs/backend/configuration.md)
 
 ### 数据库迁移
 
@@ -146,6 +150,24 @@ openspec status --change <change-name>
 
 - **Beta**: https://openrouter-free-models-frontend.pages.dev
 - **API**: https://openrouter-free-models-api.hz-studio.workers.dev
+
+## 📚 技术文档
+
+完整的技术文档位于 [docs/](docs/) 目录：
+
+### 部署相关
+- [Workers 环境配置指南](docs/deployment/workers-env-setup.md) - Cloudflare Workers 环境变量配置
+- [Pages Functions 配置指南](docs/deployment/pages-functions-guide.md) - Cloudflare Pages Functions 代理配置
+
+### 后端相关
+- [API 认证与保护](docs/backend/api-auth.md) - API 端点认证机制和安全最佳实践
+- [配置说明](docs/backend/configuration.md) - 后端环境变量和配置文件说明
+
+### 前端相关
+- [路由说明](docs/frontend/routing.md) - React Router v7 路由配置和使用
+
+### 功能相关
+- [邮件订阅状态说明](docs/features/email-subscription-status.md) - 邮件订阅功能的当前状态和重新启用指南
 
 ## 注意事项
 

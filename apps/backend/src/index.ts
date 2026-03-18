@@ -16,6 +16,7 @@ import modelsRouter from './routes/models'
 import subscriptionsRouter from './routes/subscriptions'
 import telegramRouter from './routes/telegram'
 import telegramTestRouter from './routes/telegram-test'
+import debugRouter from './routes/debug'
 
 const app = new Hono<{ Bindings: Env }>()
 
@@ -29,6 +30,7 @@ app.route('/api/subscriptions', subscriptionsRouter)
 app.route('/api/telegram', telegramRouter)
 app.route('/api/telegram/test', telegramTestRouter)
 app.route('/api', healthRouter)
+app.route('/api/debug', debugRouter)
 
 // Cron endpoint for scheduled updates
 app.get('/cron/sync', AuthMiddleware.requireCronSecret(), async c => {

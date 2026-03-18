@@ -11,10 +11,10 @@ export function ModelCard({ model }: ModelCardProps) {
 
   const modality = model.architecture?.modality || 'text';
   const modalityColors: Record<string, string> = {
-    text: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    'text+image': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-    'text+video': 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200',
-    image: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+    text: 'bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-200',
+    'text+image': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200',
+    'text+video': 'bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-200',
+    image: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200',
   };
 
   const modalityIcons: Record<string, string> = {
@@ -44,54 +44,59 @@ export function ModelCard({ model }: ModelCardProps) {
   };
 
   return (
-    <div className="card p-6 hover:shadow-lg transition-shadow duration-200">
+    <div className="card p-5 hover:shadow-md transition-all duration-200 group">
+      {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <a
           href={modelUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-lg font-semibold text-gray-900 dark:text-white pr-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          className="text-heading font-semibold text-gray-900 dark:text-white pr-3 hover:text-accent dark:hover:text-accent-400 transition-colors line-clamp-1"
         >
           {model.name}
         </a>
-        <span className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${modalityColors[modality] || modalityColors.text}`}>
-          {modalityIcons[modality] || '📝'} {modality}
+        <span className={`px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${modalityColors[modality] || modalityColors.text}`}>
+          <span className="mr-1">{modalityIcons[modality] || '📝'}</span>
+          {modality}
         </span>
       </div>
 
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+      {/* Description */}
+      <p className="text-body text-gray-600 dark:text-gray-400 mb-4 line-clamp-2 min-h-[40px]">
         {model.description || 'No description available'}
       </p>
 
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Context:</span>
-          <span className="font-medium text-gray-900 dark:text-white">
-            {model.context_length.toLocaleString()} tokens
-          </span>
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+          <div className="text-caption text-gray-600 dark:text-gray-400 mb-1">Context</div>
+          <div className="text-sm font-semibold text-gray-900 dark:text-white">
+            {(model.context_length / 1000).toFixed(0)}k
+          </div>
         </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Prompt:</span>
-          <span className="font-medium text-green-600 dark:text-green-400">
+        <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+          <div className="text-caption text-gray-600 dark:text-gray-400 mb-1">Prompt</div>
+          <div className="text-sm font-semibold text-green-600 dark:text-green-400">
             {formatPrice(model.pricing.prompt)}
-          </span>
+          </div>
         </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Completion:</span>
-          <span className="font-medium text-green-600 dark:text-green-400">
+        <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+          <div className="text-caption text-gray-600 dark:text-gray-400 mb-1">Completion</div>
+          <div className="text-sm font-semibold text-green-600 dark:text-green-400">
             {formatPrice(model.pricing.completion)}
-          </span>
+          </div>
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+      {/* Model ID */}
+      <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
-          <code className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded flex-1 truncate">
+          <code className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-2.5 py-1.5 rounded-md flex-1 truncate font-mono">
             {model.id}
           </code>
           <button
             onClick={handleCopyId}
-            className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors group relative"
+            className="p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 group/btn relative"
             title={copied ? 'Copied!' : 'Copy model ID'}
           >
             {copied ? (
@@ -99,7 +104,7 @@ export function ModelCard({ model }: ModelCardProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             ) : (
-              <svg className="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-gray-500 group-hover/btn:text-gray-700 dark:group-hover/btn:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             )}
