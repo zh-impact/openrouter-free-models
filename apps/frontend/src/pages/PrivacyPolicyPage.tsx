@@ -67,7 +67,7 @@ export function PrivacyPolicyPage() {
                 href="https://openrouter.ai/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-600 hover:text-primary-700 underline"
+                className="text-accent hover:text-accent-600 underline font-medium transition-colors"
               >
                 openrouter.ai/privacy
               </a>
@@ -92,7 +92,7 @@ export function PrivacyPolicyPage() {
               href="https://telegram.org/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 hover:text-primary-700 underline"
+              className="text-accent hover:text-accent-600 underline font-medium transition-colors"
             >
               Privacy Policy
             </a>
@@ -129,7 +129,7 @@ export function PrivacyPolicyPage() {
               href="https://www.cloudflare.com/privacypolicy/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 hover:text-primary-700 underline"
+              className="text-accent hover:text-accent-600 underline font-medium transition-colors"
             >
               Cloudflare's Privacy Policy
             </a>
@@ -351,7 +351,7 @@ export function PrivacyPolicyPage() {
               href="https://github.com/yourusername/openrouter-free-models"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 hover:text-primary-700 underline"
+              className="text-accent hover:text-accent-600 underline font-medium transition-colors"
             >
               View project and open an issue
             </a>

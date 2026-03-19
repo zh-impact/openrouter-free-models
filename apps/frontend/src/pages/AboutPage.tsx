@@ -96,7 +96,7 @@ export function AboutPage() {
             href="https://openrouter.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary-600 hover:text-primary-700 underline"
+            className="text-accent hover:text-accent-600 underline font-medium transition-colors"
           >
             OpenRouter's public API
           </a>
@@ -145,7 +145,7 @@ export function AboutPage() {
           href="https://github.com/yourusername/openrouter-free-models"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center px-5 py-2.5 bg-accent text-white rounded-lg hover:bg-accent-600 active:scale-95 transition-all duration-200 font-medium shadow-md hover:shadow-lg"
         >
           <svg
             className="w-5 h-5 mr-2"

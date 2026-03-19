@@ -16,7 +16,7 @@ export function ModelList({ models, loading, error, viewMode }: ModelListProps) 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
       </div>
     );
   }
@@ -107,7 +107,7 @@ function ModelListItem({ model }: ModelListItemProps) {
             href={modelUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-base font-semibold text-gray-900 dark:text-white truncate hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            className="text-base font-semibold text-gray-900 dark:text-white truncate hover:text-accent dark:hover:text-accent-400 transition-colors"
           >
             {model.name}
           </a>
