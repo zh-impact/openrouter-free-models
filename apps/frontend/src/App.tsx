@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, NavLink, useLocation } from 'react-router-dom'
 import { Header } from './components/Header'
+import { MetaUpdater } from './components/MetaUpdater'
+import { PAGE_META } from './config/social-meta'
 import { ModelsPage } from './pages/ModelsPage'
 import { ChangesPage } from './pages/ChangesPage'
 import { SubscribePage } from './pages/SubscribePage'
@@ -51,12 +53,44 @@ function App() {
       <Header darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
       <main className="container-custom min-h-[calc(100vh-8rem)]">
         <Routes>
-          <Route path="/" element={<ModelsPage />} />
-          <Route path="/models" element={<ModelsPage />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <MetaUpdater {...PAGE_META['/']} />
+                <ModelsPage />
+              </>
+            }
+          />
+          <Route
+            path="/models"
+            element={
+              <>
+                <MetaUpdater {...PAGE_META['/models']} />
+                <ModelsPage />
+              </>
+            }
+          />
           <Route path="/changes" element={<ChangesPage />} />
           <Route path="/subscribe" element={<SubscribePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route
+            path="/about"
+            element={
+              <>
+                <MetaUpdater {...PAGE_META['/about']} />
+                <AboutPage />
+              </>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <>
+                <MetaUpdater {...PAGE_META['/privacy-policy']} />
+                <PrivacyPolicyPage />
+              </>
+            }
+          />
         </Routes>
       </main>
 
